@@ -16,12 +16,12 @@ export function meta({}: Route.MetaArgs) {
 const HomePage = () => {
   // Checking if the page is running correctly
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex items-center justify-center gap-4">
       <Link to="/sign-in">
-        <Button className="bg-blue-500 text-white">Sign In</Button>
+        <Button variant="outline">Sign In</Button>
       </Link>
       <Link to="sign-up">
-        <Button className="bg-blue-500 text-white">Sign Up</Button>
+        <Button variant="outline">Sign Up</Button>
       </Link>
     </div>
   );
