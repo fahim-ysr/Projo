@@ -55,6 +55,7 @@ const SignIn = () => {
               onSubmit={form.handleSubmit(handleOnSubmit)}
               className="space-y-6"
             >
+              {/* Email Field */}
               <FormField
                 control={form.control}
                 name="email"
@@ -72,6 +73,7 @@ const SignIn = () => {
                   </FormItem>
                 )}
               />
+              {/* Password Field */}
               <FormField
                 control={form.control}
                 name="password"
@@ -89,16 +91,18 @@ const SignIn = () => {
                   </FormItem>
                 )}
               />
+              {/* Sign in button */}
               <Button type="submit" className="w-full" variant={"outline"}>
                 Sign in
               </Button>
             </form>
           </Form>
 
-          <CardFooter>
+          {/* Sign up option in case if account does not exist */}
+          <CardFooter className="flex items-center justify-center mt-6">
             <div className="flex items-center justify-center">
               <p className="text-sm text-muted-foreground">
-                Don&apos;t have an accout? <Link to="sign-up">Sign up</Link>
+                Don&apos;t have an accout? <Link to="/sign-up">Sign up</Link>
               </p>
             </div>
           </CardFooter>

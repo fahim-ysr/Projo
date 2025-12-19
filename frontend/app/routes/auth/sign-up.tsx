@@ -1,11 +1,156 @@
-// Sign-up Page
+// Sign-in Page
 
+import { signUpSchema } from "@/lib/schema";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "react-router";
+
+type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
+  const form = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const handleOnSubmit = (values: SignUpFormData) => {
+    console.log(values);
+  };
+
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      Sign-up Page
+    <div className="min-h-screen flex flex-col items-center justify-center bg-muted/40 p-4">
+      <Card className="max-w-md w-full shadow-xl">
+        <CardHeader className="text-center mb-5">
+          <CardTitle className="text-2xl font-bold">
+            Create an account
+          </CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
+            Sign up to continue
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleOnSubmit)}
+              className="space-y-6"
+            >
+              {/* Name Field */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Kelly Noseworthy"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Email Field */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="email@example.com"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Password Field */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="********"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Confirm Password Field */}
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="********"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Sign up button */}
+              <Button type="submit" className="w-full" variant={"outline"}>
+                Sign up
+              </Button>
+            </form>
+          </Form>
+
+          {/* Sign in option in case if accout already exists */}
+          <CardFooter className="flex items-center justify-center mt-6">
+            <div className="flex items-center justify-center">
+              <p className="text-sm text-muted-foreground">
+                Already have an accout? <Link to="/sign-in">Sign in</Link>
+              </p>
+            </div>
+          </CardFooter>
+        </CardContent>
+      </Card>
     </div>
   );
 };
