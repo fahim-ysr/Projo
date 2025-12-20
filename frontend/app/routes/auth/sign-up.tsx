@@ -149,7 +149,12 @@ const SignUp = () => {
                 )}
               />
               {/* Sign up button */}
-              <Button type="submit" className="w-full" variant={"outline"}>
+              <Button
+                type="submit"
+                className="w-full"
+                variant={"outline"}
+                disabled={isPending}
+              >
                 Sign up
               </Button>
             </form>
