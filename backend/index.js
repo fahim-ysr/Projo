@@ -1,15 +1,18 @@
-// Importing required modules
+// Main Server File (Entry point)
 
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import routes from "./routes/index.js";
 
-// Allows file to load the API keys and credentials from .env file
+// Allows file to load the variables from .env file
 dotenv.config();
 
+// Initializes Express app
 const app = express();
+// Parses incoming JSON requests and put the parsed data in req.body
 app.use(express.json());
 
 // Configuring cors
@@ -24,12 +27,13 @@ app.use(
 // Configuring morgan
 app.use(morgan("dev"));
 
-// Database connection
+// MongoDB database connection
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("BD Connected Successfully"))
   .catch("Failed to connect to the database");
 
+// Gets port number from .env
 const PORT = process.env.PORT;
 
 app.get("/", async (req, res) => {
@@ -37,6 +41,9 @@ app.get("/", async (req, res) => {
     message: "Welcome to Projo API",
   });
 });
+
+// Mounts all API routes at /api-v1 base path
+app.use("/api-v1", routes);
 
 // Error middleware
 app.use((err, req, res, next) => {
@@ -51,6 +58,7 @@ app.use((req, res) => {
   });
 });
 
+// Starts servr and listens to the specific port
 app.listen(PORT, () => {
   console.log(`Server running on PORT: ${PORT}`);
 });
