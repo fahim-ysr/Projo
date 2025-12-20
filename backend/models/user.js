@@ -1,6 +1,6 @@
 // User Schema (Defines the structure and validation rules for user documents in MongoDB)
 
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 // Defines the schema for user documents
 const userSchema = new Schema(
