@@ -3,12 +3,23 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import Verification from "../models/verification.js";
 import { sendEmail } from "../libs/send-email.js";
+import aj from "../libs/arcjet.js";
 
 // Registers a new user
 const registerUser = async (req, res) => {
   try {
     // Extracts user data from request
     const { name, email, password } = req.body;
+
+    // From Arcjet Docs (To check if email is valid & not disposable email address)
+    const decision = await aj.protect(req, { email });
+    console.log("Arcjet decision", decision);
+
+    if (decision.isDenied()) {
+      res.writeHead(403, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Invalid email address" }));
+    }
+
     // Checks if user already exists
     const existingUser = await User.findOne({ email });
 
