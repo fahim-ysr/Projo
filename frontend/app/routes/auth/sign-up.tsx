@@ -30,6 +30,8 @@ import { toast } from "sonner";
 export type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -45,7 +47,16 @@ const SignUp = () => {
   const handleOnSubmit = (values: SignUpFormData) => {
     mutate(values, {
       onSuccess: () => {
-        toast.success("Account created successfully");
+        toast.success("Email Verification Required", {
+          description:
+            "Please check your email for a verification link. If you don't see it, please check your spam folder.",
+        });
+
+        // Resets the form upon account creation
+        form.reset();
+
+        // Redirects to sign in page
+        navigate("/sign-in");
       },
       onError: (error: any) => {
         const errorMessage =
@@ -155,7 +166,7 @@ const SignUp = () => {
                 variant={"outline"}
                 disabled={isPending}
               >
-                Sign up
+                {isPending ? "Signing in..." : "Sign in"}
               </Button>
             </form>
           </Form>

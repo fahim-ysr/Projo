@@ -21,7 +21,7 @@ export const sendEmail = async (to, subject, html) => {
 
   try {
     const sgResponse = await sgMail.send(message);
-    console.log("Email send successfully", {
+    console.log("Email sent successfully", {
       to,
       subject,
       sendgridResponse: sgResponse,
