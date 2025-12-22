@@ -1,16 +1,21 @@
+// Utility for sending emails using SendGrid
+
 import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
 
+// Loads environment variables
 dotenv.config();
 
 if (!process.env.SEND_GRID_API || !process.env.FROM_EMAIL) {
   console.error("Missing SEND_GRID_API or FROM_EMAIL environment variable");
 }
 
+// Set SendGrid API key
 sgMail.setApiKey(process.env.SEND_GRID_API);
 
 const fromEmail = process.env.FROM_EMAIL;
 
+// Sends an email using SendGrid
 export const sendEmail = async (to, subject, html) => {
   const message = {
     to,

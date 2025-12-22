@@ -1,7 +1,11 @@
+// Utility functions for making API requests using Axios
+
 import axios from "axios";
 
+// Sets the base URL for API requests
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api-v1";
 
+// Creates an Axios instance with default headers
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -9,6 +13,7 @@ const api = axios.create({
   },
 });
 
+// Attaches JWT token to every request if available
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
@@ -19,6 +24,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Handles unauthorized responses globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -30,28 +36,28 @@ api.interceptors.response.use(
   }
 );
 
-// POST Operation
+// Helper for POST Operation
 const postData = async <T>(url: string, data: unknown): Promise<T> => {
   const response = await api.post(url, data);
 
   return response.data;
 };
 
-// FETCH Operation
+// Helper for FETCH Operation
 const fetchData = async <T>(url: string): Promise<T> => {
   const response = await api.get(url);
 
   return response.data;
 };
 
-// UPDATE Operation
+// Helper for UPDATE Operation
 const updateData = async <T>(url: string, data: unknown): Promise<T> => {
   const response = await api.put(url, data);
 
   return response.data;
 };
 
-// DELETE Operation
+// Helper for DELETE Operation
 const deleteData = async <T>(url: string): Promise<T> => {
   const response = await api.delete(url);
 

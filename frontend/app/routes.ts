@@ -1,4 +1,4 @@
-// Sets Routes
+// Defines all routes for the application
 
 import {
   type RouteConfig,
@@ -7,6 +7,7 @@ import {
   route,
 } from "@react-router/dev/routes";
 
+// Auth related routes
 export default [
   layout("routes/auth/auth_layout.tsx", [
     index("routes/root/home.tsx"),
@@ -17,6 +18,7 @@ export default [
     route("verify-email", "routes/auth/verify-email.tsx"),
   ]),
 
+  // Dashboard routes
   layout("routes/dashboard/dashboard-layout.tsx", [
     route("dashboard", "routes/dashboard/index.tsx"),
   ]),

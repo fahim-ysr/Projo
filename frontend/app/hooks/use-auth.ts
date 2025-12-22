@@ -1,14 +1,18 @@
+// Custom React Query hooks for authentication API calls
+
 import type { SignUpFormData } from "@/routes/auth/sign-up";
 import { signUpSchema } from "@/lib/schema";
 import { useMutation } from "@tanstack/react-query";
 import { postData } from "@/lib/fetch-util";
 
+// Hook for registering a new user
 export const useSignUpMutation = () => {
   return useMutation({
     mutationFn: (data: SignUpFormData) => postData("/auth/register", data),
   });
 };
 
+// Hook for verifying a user's email
 export const useVerifyEmailMutation = () => {
   return useMutation({
     mutationFn: (data: { token: string }) =>
@@ -16,6 +20,7 @@ export const useVerifyEmailMutation = () => {
   });
 };
 
+// Hook for logging in a user
 export const useLoginMutation = () => {
   return useMutation({
     mutationFn: (data: { email: string; password: string }) =>

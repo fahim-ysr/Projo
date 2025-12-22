@@ -166,7 +166,7 @@ const SignUp = () => {
                 variant={"outline"}
                 disabled={isPending}
               >
-                {isPending ? "Signing in..." : "Sign in"}
+                {isPending ? "Signing in..." : "Sign up"}
               </Button>
             </form>
           </Form>

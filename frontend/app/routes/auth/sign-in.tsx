@@ -27,6 +27,7 @@ import { Link, useNavigate } from "react-router";
 import { useLoginMutation } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import { useAuth } from "@/provider/auth-context";
+import { Loader2 } from "lucide-react";
 
 type SignInFormData = z.infer<typeof signInSchema>;
 
@@ -122,8 +123,13 @@ const SignIn = () => {
                 )}
               />
               {/* Sign in button */}
-              <Button type="submit" className="w-full" variant={"outline"}>
-                Sign in
+              <Button
+                type="submit"
+                className="w-full"
+                variant={"outline"}
+                disabled={isPending}
+              >
+                {isPending ? <Loader2 className="w-4 h-4 mr-2" /> : "Sign in"}
               </Button>
             </form>
           </Form>

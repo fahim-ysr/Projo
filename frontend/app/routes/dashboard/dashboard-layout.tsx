@@ -1,5 +1,15 @@
+// Layout for dashboard pages
+
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/provider/auth-context";
+
 const DashboardLayout = () => {
-  return <div>DashboardLayout</div>;
+  const { user, logout } = useAuth();
+  return (
+    <div>
+      <Button onClick={logout}>Logout</Button>
+    </div>
+  );
 };
 
 export default DashboardLayout;

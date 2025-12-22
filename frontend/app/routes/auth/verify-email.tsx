@@ -1,4 +1,4 @@
-// Verify Email Page
+// Page for verifying a user's email address
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
@@ -13,8 +13,10 @@ const Verify = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const { mutate, isPending: isVerifying } = useVerifyEmailMutation();
 
+  // Gets the token from the URL
   const token = searchParams.get("token");
 
+  // When the component loads, attempts to verify the email using the token
   useEffect(() => {
     if (token) {
       mutate(
@@ -36,6 +38,7 @@ const Verify = () => {
     }
   }, [searchParams]);
 
+  // Renders UI based on verification status
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-2xl font-bold">Verify Email</h1>
@@ -51,6 +54,7 @@ const Verify = () => {
         <CardContent>
           <div className="flex flex-col items-center justify-center py-6">
             {isVerifying ? (
+              // Shows loading spinner while verifying
               <>
                 <Loader className="w-10 h-10 text-gray-500 animate-spin" />
                 <h3 className="text-lg font-semibold">Verifying email...</h3>
@@ -58,7 +62,8 @@ const Verify = () => {
                   Please wait while we verify your email.
                 </p>
               </>
-            ) : isSuccess ? (
+            ) : // Shows success message if verified
+            isSuccess ? (
               <>
                 <CheckCircle className="w-10 h-10 text-green-500"></CheckCircle>
                 <h3 className="text-lg font-semibold">Email Verified</h3>
@@ -67,6 +72,7 @@ const Verify = () => {
                 </p>
               </>
             ) : (
+              // Shows error message if verification failed
               <>
                 <CheckCircle className="w-10 h-10 text-red-500"></CheckCircle>
                 <h3 className="text-lg font-semibold">

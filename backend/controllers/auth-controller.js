@@ -1,3 +1,5 @@
+// Handles user registration, login, email verification and password reset
+
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
@@ -5,13 +7,13 @@ import Verification from "../models/verification.js";
 import { sendEmail } from "../libs/send-email.js";
 import aj from "../libs/arcjet.js";
 
-// Registers a new user
+// Registers a new user and sends a verification email
 const registerUser = async (req, res) => {
   try {
     // Extracts user data from request
     const { name, email, password } = req.body;
 
-    // From Arcjet Docs (To check if email is valid & not disposable email address)
+    // Checks email validity using Arcjet
     const decision = await aj.protect(req, { email });
     console.log("Arcjet decision", decision);
 
@@ -30,9 +32,8 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Generates a salt for password hashing
+    // Hashes the password for security
     const salt = await bcrypt.genSalt(10);
-    // Hashes the password using bcrypt for secured storage
     const hashPassword = await bcrypt.hash(password, salt);
 
     // Creates a new user in database with the hashed password
@@ -42,20 +43,21 @@ const registerUser = async (req, res) => {
       password: hashPassword,
     });
 
-    // Verification token
+    // Creates a verification token for email verification
     const verificationToken = jwt.sign(
       { userId: newUser._id, purpose: "email-verification" },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
+    // Stores the verification token in the database
     await Verification.create({
       userId: newUser._id,
       token: verificationToken,
       expiresAt: new Date(Date.now() + 1 * 60 * 60 * 1000),
     });
 
-    // Sending verification email
+    // Sending the verification email to the user
     const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
     const emailBody = `<p>Click <a href="${verificationLink}"> here </a> to verify your email</p>`;
     const emailSubject = "Verify your email";
@@ -140,12 +142,14 @@ const loginUser = async (req, res) => {
       }
     }
 
+    // Checks password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    // Creates login token
     const token = jwt.sign(
       { userId: user._id, purpose: "login" },
       process.env.JWT_SECRET,
@@ -154,6 +158,7 @@ const loginUser = async (req, res) => {
 
     user.lastLogin = new Date();
 
+    // Removes password from user object before sending
     const userData = user.toObject();
     delete userData.password;
 
@@ -170,9 +175,12 @@ const loginUser = async (req, res) => {
   }
 };
 
+// Verifies the user's email using the token from the email link
 const verifyEmail = async (req, res) => {
   try {
+    // Gets token from request body
     const { token } = req.body;
+    // Decodes to verify token
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!payload) {
@@ -181,10 +189,12 @@ const verifyEmail = async (req, res) => {
 
     const { userId, purpose } = payload;
 
+    // Checks the token purpose
     if (purpose !== "email-verification") {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    // Finds the verification record in the database
     const verification = await Verification.findOne({
       userId,
       token,
@@ -194,12 +204,14 @@ const verifyEmail = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    // Chekcs if the token has expired
     const isTokenExpired = verification.expiresAt < new Date();
 
     if (isTokenExpired) {
       return res.status(401).json({ message: "Token expired" });
     }
 
+    // Finds the user and marks their email as verified
     const user = await User.findById(userId);
 
     if (!user) {
@@ -213,6 +225,7 @@ const verifyEmail = async (req, res) => {
     user.isEmailVerified = true;
     await user.save();
 
+    // Deteles the verification record
     await Verification.findByIdAndDelete(verification._id);
 
     return res.status(200).json({ message: "Email verified successfully" });
@@ -224,4 +237,70 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, verifyEmail };
+const resetPasswordRequest = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const { user } = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    if (!user.isEmailVerified) {
+      return res
+        .status(400)
+        .json({ message: "Please verify your email first" });
+    }
+
+    const existingVerification = await Verification.findOne({
+      userId: user._id,
+    });
+
+    if (existingVerification && existingVerification.expiresAt > new Date()) {
+      return res
+        .status(400)
+        .json({ message: "Reset password request already sent" });
+    }
+
+    if (existingVerification && existingVerification.expiresAt < new Date()) {
+      await Verification.findByIdAndDelete(existingVerification._id);
+    }
+
+    const resetPasswordToken = jwt.sign(
+      {
+        userId: user._id,
+        purpose: "reset-password",
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    await Verification.create({
+      userId: newUser._id,
+      token: verificationToken,
+      expiresAt: new Date(Date.now() + 15 * 60 * 1000),
+    });
+
+    // Sending reset password email
+    const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetPasswordToken}`;
+    const emailBody = `<p>Click <a href="${resetPasswordLink}"> here </a> to reset your password</p>`;
+    const emailSubject = "Reset your password";
+
+    const isEmailSent = await sendEmail(email, emailSubject, emailBody);
+
+    if (!isEmailSent) {
+      res.status(500).json({ message: "Failed to send password reset email" });
+    }
+
+    // Returns password reset messsage
+    res.status(201).json({
+      message:
+        "Reset password email sent to your email. Please check and reset your password.",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export { registerUser, loginUser, verifyEmail, resetPasswordRequest };

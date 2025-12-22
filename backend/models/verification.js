@@ -1,5 +1,8 @@
+// Mongoose model for storing verification tokens (email verification and password reset)
+
 import mongoose from "mongoose";
 
+// Defines the schema for email verification tokens
 const verificationSchema = new mongoose.Schema(
   {
     userId: {
@@ -21,6 +24,7 @@ const verificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Creates the Verification model
 const Verification = mongoose.model("Verification", verificationSchema);
 
 export default Verification;

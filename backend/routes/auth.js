@@ -1,3 +1,5 @@
+// Defines authentication related API routes
+
 import express from "express";
 import { z } from "zod";
 import { validateRequest } from "zod-express-middleware";
@@ -12,10 +14,10 @@ import {
   verifyEmail,
 } from "../controllers/auth-controller.js";
 
-// Creates a new router instance for authentication routes
+// Creates a new router instance for authentication endpoints
 const router = express.Router();
 
-// Registers a new user account
+// Route for registering a new user
 router.post(
   "/register",
   validateRequest({
@@ -24,7 +26,7 @@ router.post(
   registerUser
 );
 
-// Logs in an existing user
+// Route for logging in an existing user
 router.post(
   "/login",
   validateRequest({
@@ -33,12 +35,20 @@ router.post(
   loginUser
 );
 
+// Route for verifying a user's email
 router.post(
   "/verify-email",
   validateRequest({
     body: verifyEmailSchema,
   }),
   verifyEmail
+);
+
+// Route for requesting a password reset
+router.post(
+  "/reset-password-reset",
+  validateRequest({ body: { email: z.string().email() } }),
+  resetPasswordRequest
 );
 
 export default router;
