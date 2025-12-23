@@ -7,11 +7,14 @@ import {
   registerSchema,
   loginSchema,
   verifyEmailSchema,
+  resetPasswordSchema,
+  emailSchema,
 } from "../libs/validate-schema.js";
 import {
   registerUser,
   loginUser,
   verifyEmail,
+  resetPasswordRequest,
 } from "../controllers/auth-controller.js";
 
 // Creates a new router instance for authentication endpoints
@@ -46,9 +49,16 @@ router.post(
 
 // Route for requesting a password reset
 router.post(
-  "/reset-password-reset",
-  validateRequest({ body: { email: z.string().email() } }),
+  "/reset-password-request",
+  validateRequest({ body: emailSchema }),
   resetPasswordRequest
+);
+
+// Route for resetting password reset
+router.post(
+  "/reset-password",
+  validateRequest({ body: resetPasswordSchema }),
+  verifyResetPasswordTokenAndResetPassword
 );
 
 export default router;

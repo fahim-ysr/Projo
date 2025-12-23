@@ -303,4 +303,62 @@ const resetPasswordRequest = async (req, res) => {
   }
 };
 
+const verifyResetPasswordTokenAndResetPassword = async (req, res) => {
+  try {
+    const { token, newPassword, confirmPassword } = req.body;
+
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!payload) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { userId, purpose } = payload;
+
+    if (purpose !== "reset-password") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const verification = await Verification.findOne({
+      userId,
+      token,
+    });
+
+    if (!verification) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const isTokenExpired = verification.expiresAt < newDate();
+
+    if (isTokenExpired) {
+      return res.status(401).json({ message: "Token expired" });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(401).json({ message: "Passwords do not match" });
+    }
+
+    // Hashes the password for security
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    user.password = hashPassword;
+    await user.save();
+
+    await Verification.findByIdAndDelete(verification._id);
+
+    // Returns password reset messsage
+    return res.status(200).json({ message: "Passwords reset successful" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export { registerUser, loginUser, verifyEmail, resetPasswordRequest };
