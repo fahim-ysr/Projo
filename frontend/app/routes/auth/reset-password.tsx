@@ -19,6 +19,7 @@ import { ArrowLeft, CheckCircle, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useResetPasswordMutation } from "@/hooks/use-auth";
+import { toast } from "sonner";
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
@@ -40,11 +41,21 @@ const ResetPassword = () => {
   });
 
   const onSubmit = (values: ResetPasswordFormData) => {
+    if (!token) {
+      toast.error("Invalid token");
+      return;
+    }
+
     resetPassword(
       { ...values, token: token as string },
       {
         onSuccess: () => {
           setIsSuccess(true);
+        },
+        onError: (error: any) => {
+          const errorMessage = error.response?.data?.message;
+          toast.error(errorMessage);
+          console.log(error);
         },
       }
     );
