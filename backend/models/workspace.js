@@ -1,3 +1,5 @@
+// Mongoose model for Workspace documents
+
 import { Schema, model } from "mongoose";
 
 const workspaceModel = new Schema(

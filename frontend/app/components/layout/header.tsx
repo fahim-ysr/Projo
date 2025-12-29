@@ -1,3 +1,5 @@
+// Header component for the app, shows workspace selector and user menu
+
 import { useAuth } from "@/provider/auth-context";
 import type { Workspace } from "@/types";
 import { Button } from "../ui/button";
@@ -32,6 +34,7 @@ export const Header = ({
 
   return (
     <div className="bg-background sticky top-0 z-40 border-b">
+      {/* Workspace selector */}
       <div className="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8 py-4"></div>
       <></>
       <DropdownMenu>
@@ -56,7 +59,7 @@ export const Header = ({
         <DropdownMenuContent>
           <DropdownMenu>Workspace</DropdownMenu>
           <DropdownMenuSeparator />
-
+          {/* List of workspaces */}
           <DropdownMenuGroup>
             {workspaces.map((ws) => (
               <DropdownMenuItem
@@ -70,7 +73,7 @@ export const Header = ({
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
-
+          {/* Create new workspace option */}
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={onCreateWorkspace}>
               <PlusCircle className="w-4 h-4 mr-2" />
@@ -80,6 +83,7 @@ export const Header = ({
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* User menu and notifications */}
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon">
           <Bell />

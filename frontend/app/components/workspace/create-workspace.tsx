@@ -1,3 +1,5 @@
+// Modal dialog and form for creating a new workspace
+
 import { workspaceSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -33,6 +35,7 @@ interface CreateWorkspaceProps {
 
 export type WorkspaceForm = z.infer<typeof workspaceSchema>;
 
+// List of color options for workspace avatars
 export const colorOptions = [
   "#FF5733", // Red Orange
   "#33C1FF", // Blue
@@ -44,6 +47,7 @@ export const colorOptions = [
   "#34495E", // Navy
 ];
 
+// Main create workspace component
 export const CreateWorkspace =
   () =>
   ({ isCreatingWorkspace, setIsCreatingWorkspace }: CreateWorkspaceProps) => {
@@ -59,6 +63,7 @@ export const CreateWorkspace =
     const { mutate, isPending } = useCreateWorkspace();
     const navigate = useNavigate();
 
+    // Handles form submission for creating a workspace
     const onSubmit = (data: WorkspaceForm) => {
       console.log(data, {
         onSuccess: (data: any) => {
@@ -83,6 +88,7 @@ export const CreateWorkspace =
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}></form>
               <div className="space-y-4 py-4">
+                {/* Workspace Name */}
                 <FormField
                   control={form.control}
                   name="name"
@@ -96,6 +102,7 @@ export const CreateWorkspace =
                     </FormItem>
                   )}
                 />
+                {/* Workspace Description */}
                 <FormField
                   control={form.control}
                   name="description"
@@ -113,6 +120,7 @@ export const CreateWorkspace =
                     </FormItem>
                   )}
                 />
+                {/* Workspace Color Picker */}
                 <FormField
                   control={form.control}
                   name="color"

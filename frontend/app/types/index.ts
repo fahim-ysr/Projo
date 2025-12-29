@@ -1,3 +1,5 @@
+// Type definitions for User and Workspace objects
+
 export interface User {
   id: string;
   name: string;

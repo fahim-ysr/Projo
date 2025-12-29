@@ -1,5 +1,8 @@
+// Controller functions for workspace creation and retrieval
+
 import Workspace from "../models/workspace";
 
+// Creates a new workspacee and adds the creator as owner
 const createWorkspace = async (req, res) => {
   try {
     const { name, description, color } = req.body;
@@ -27,6 +30,7 @@ const createWorkspace = async (req, res) => {
   }
 };
 
+// Gets all workspaces where the user is a member
 const getWorkspaces = async (req, res) => {
   try {
     const workspaces = await Workspace.find({

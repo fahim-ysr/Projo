@@ -1,3 +1,5 @@
+// Sidebar navigation for dashboard, handles workspace-aware navigation
+
 import type { Workspace } from "@/types";
 import { Icon, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -15,6 +17,7 @@ interface SidebarNavProps {
   className?: string;
 }
 
+// Renders navigation buttons for each sidebar item
 export const SidebarNav = ({
   items,
   isCollapsed,

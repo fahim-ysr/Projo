@@ -1,3 +1,5 @@
+// Workspace-related API routes
+
 import express from "express";
 import { validateRequest } from "zod-express-middleware";
 import { workspaceSchema } from "../libs/validate-schema.js";
@@ -6,6 +8,7 @@ import { createWorkspace } from "../controllers/workspace.js";
 
 const router = express.Router();
 
+// Route to create a new workspace (requires authentication)
 router.post(
   "/",
   authMiddleware,
@@ -13,6 +16,7 @@ router.post(
   createWorkspace
 );
 
+// Route to get all workspaces for the authenticated user
 router.get("/", authMiddleware, getWorkspaces);
 
 export default router;

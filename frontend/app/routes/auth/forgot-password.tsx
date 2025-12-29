@@ -24,9 +24,12 @@ import { z } from "zod";
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPassword = () => {
+  // Tracks if reset email was sent successfully
   const [isSuccess, setIsSuccess] = useState(false);
+  // Mutation hook for forgot password API
   const { mutate: forgotPassword, isPending } = useForgotPasswordMutation();
 
+  // Sets up form validation and state
   const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -34,6 +37,7 @@ const ForgotPassword = () => {
     },
   });
 
+  // Handles form submission
   const onSubmit = (data: ForgotPasswordFormData) => {
     forgotPassword(data, {
       onSuccess: () => {
@@ -49,6 +53,7 @@ const ForgotPassword = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="w-full max-w-md space-y-6">
+        {/* Page title and instructions */}
         <div className="flex- flex-col items-center justify-center space-y-2">
           <h1 className="text-2xl font-bold">Forgot Password</h1>
           <p className="text-muted-foreground">
@@ -58,6 +63,7 @@ const ForgotPassword = () => {
 
         <Card>
           <CardHeader>
+            {/* Link to go back to sign in */}
             <Link to="/sign-in">
               <ArrowLeft className="w-4 h-4" />
               <span>Back to sign in</span>
@@ -65,6 +71,7 @@ const ForgotPassword = () => {
           </CardHeader>
 
           <CardContent>
+            {/* Shows success message or the form */}
             {isSuccess ? (
               <div className="flex flex-col items-center justify-center">
                 <CheckCircle className="w-10 h-10 text-green-500" />
@@ -76,6 +83,7 @@ const ForgotPassword = () => {
                 </p>
               </div>
             ) : (
+              // Forgot password form
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}

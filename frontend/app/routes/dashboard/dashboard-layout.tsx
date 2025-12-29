@@ -1,4 +1,4 @@
-// Layout for dashboard pages
+// Layout for dashboard pages, includes sidebar, header, and workspace creation modal
 
 import { Header } from "@/components/layout/header";
 import { SidebarComponent } from "@/components/layout/sidebar-component";
@@ -10,6 +10,7 @@ import type { Workspace } from "@/types";
 import { useState } from "react";
 import { Navigate, Outlet } from "react-router";
 
+// Loads workspaces for the dashboard
 export const clientLoader = async () => {
   try {
     const [workspaces] = await Promise.all([fetchData("/workspaces")]);
@@ -35,6 +36,7 @@ const DashboardLayout = () => {
     return <Navigate to="sign-in" />;
   }
 
+  // Handles workspace selection from the header
   const handleWorkspaceSelected = (workspace: Workspace) => {
     setCurrentWorkspace(workspace);
   };
@@ -57,6 +59,7 @@ const DashboardLayout = () => {
         </main>
       </div>
 
+      {/* Modal for creating a new workspace */}
       <CreateWorkspace
         isCreatingWorkspace={isCreatingWorkspace}
         setIsCreatingWorkspace={setIsCreatingWorkspace}

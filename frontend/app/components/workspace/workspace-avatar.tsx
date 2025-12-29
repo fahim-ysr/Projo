@@ -1,3 +1,5 @@
+// Displays a colored avatar with the first letter of the workspace name
+
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export const WorkspaceAvatar = ({

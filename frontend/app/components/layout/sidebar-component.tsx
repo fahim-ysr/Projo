@@ -1,3 +1,5 @@
+// Sidebar component with navigation and collapse/expand functionality
+
 import { useAuth } from "@/provider/auth-context";
 import type { Workspace } from "@/types";
 import { cn } from "@/lib/utils";
@@ -26,6 +28,7 @@ export const SidebarComponent = ({
   const { user, logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // Navigation items for the sidebar
   const navItems = [
     {
       title: "Dashboard",
@@ -65,6 +68,7 @@ export const SidebarComponent = ({
         isCollapsed ? "w-16 md:w[80px]" : "w-16 md:[240px]"
       )}
     >
+      {/* Logo and collapse button */}
       <div className="flex h-14 items-center border-b px-4 mb-4">
         <Link to="/dashboard" className="flex items-center">
           {!isCollapsed && (
@@ -92,6 +96,7 @@ export const SidebarComponent = ({
           )}
         </Button>
 
+        {/* Navigation links */}
         <ScrollArea className="flex-1 px-3 py-2">
           <SidebarNav
             items={navItems}
@@ -101,6 +106,7 @@ export const SidebarComponent = ({
           />
         </ScrollArea>
 
+        {/* Logout button */}
         <div>
           <Button variant={"ghost"} size="icon" onClick={logout}>
             <LogOut className={cn("size-4", isCollapsed && "mr-2")} />

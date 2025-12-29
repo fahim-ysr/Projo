@@ -28,7 +28,7 @@ export const useLoginMutation = () => {
   });
 };
 
-// Hook for forgot password
+// Hook for forgot password (send reset email)
 export const useForgotPasswordMutation = () => {
   return useMutation({
     mutationFn: (data: { email: string }) =>
@@ -36,7 +36,7 @@ export const useForgotPasswordMutation = () => {
   });
 };
 
-// Hook for resetting password
+// Hook for resetting password with token
 export const useResetPasswordMutation = () => {
   return useMutation({
     mutationFn: (data: {

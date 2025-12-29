@@ -1,3 +1,5 @@
+// Simple loading spinner component using Lucide Loader2 icon
+
 import { Loader2 } from "lucide-react";
 
 export const Loader = () => {

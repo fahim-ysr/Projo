@@ -30,8 +30,10 @@ const ResetPassword = () => {
 
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // Mutation hook for resetting password
   const { mutate: resetPassword, isPending } = useResetPasswordMutation();
 
+  // Setup form validation and state
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -40,6 +42,7 @@ const ResetPassword = () => {
     },
   });
 
+  // Handles form submission
   const onSubmit = (values: ResetPasswordFormData) => {
     if (!token) {
       toast.error("Invalid token");
@@ -64,6 +67,7 @@ const ResetPassword = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="w-full max-w-md space-y-6">
+        {/* Page title and instructions */}
         <div className="flex- flex-col items-center justify-center space-y-2">
           <h1 className="text-2xl font-bold">Reset Password</h1>
           <p className="text-muted-foreground">Enter your password below</p>
@@ -71,12 +75,14 @@ const ResetPassword = () => {
 
         <Card>
           <CardHeader>
+            {/* Link to go back to sign in */}
             <Link to="/sign-in">
               <ArrowLeft className="w-4 h-4" />
               <span>Back to sign in</span>
             </Link>
           </CardHeader>
           <CardContent>
+            {/* Show success message or the form */}
             {isSuccess ? (
               <div className="flex flex-col items-center justify-center">
                 <CheckCircle className="w-10 h-10 text-green-500" />
