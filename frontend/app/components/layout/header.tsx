@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Link } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { WorkspaceAvatar } from "../workspace/workspace-avatar";
 import { DropdownMenuGroup } from "../ui/dropdown-menu";
 
@@ -27,7 +27,8 @@ export const Header = ({
   onCreateWorkspace,
 }: HeaderProps) => {
   const { user, logout } = useAuth();
-  const workspaces = [];
+  const { workspaces } = useLoaderData() as { workspaces: Workspace[] };
+  console.log(workspaces);
 
   return (
     <div className="bg-background sticky top-0 z-40 border-b">
