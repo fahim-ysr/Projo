@@ -1,7 +1,7 @@
 // Middleware to authenticatee requests using JWT
 
-import { jwt } from "jsonwebtoken";
-import User from "../models/user";
+import jwt from "jsonwebtoken";
+import User from "../models/user.js";
 
 // Checks for a valid JWT token in Authorization header
 const authMiddleware = async (req, res, next) => {

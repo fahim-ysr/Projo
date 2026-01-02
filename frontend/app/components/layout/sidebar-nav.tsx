@@ -1,12 +1,12 @@
 // Sidebar navigation for dashboard, handles workspace-aware navigation
 
 import type { Workspace } from "@/types";
-import { Icon, type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { href, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
-interface SidebarNavProps {
+interface SidebarNavProps extends React.HtmlHTMLAttributes<HTMLElement> {
   items: {
     title: string;
     href: string;
@@ -31,9 +31,9 @@ export const SidebarNav = ({
     <nav className={cn("flex flex-col gap-y-2", className)} {...props}>
       {items.map((el) => {
         const Icon = el.icon;
-        const isActive = location.pathname == el.href;
+        const isActive = location.pathname === el.href;
         const handleClick = () => {
-          if (el.href == "/workspace") {
+          if (el.href === "/workspaces") {
             navigate(el.href);
           } else if (currentWorkspace && currentWorkspace._id) {
             navigate(`${el.href}?workspaceId=${currentWorkspace._id}`);
@@ -52,7 +52,11 @@ export const SidebarNav = ({
             onClick={handleClick}
           >
             <Icon className="mr-2 size-4" />
-            {isCollapsed ? <span>{el.title}</span> : el.title}
+            {isCollapsed ? (
+              <span className="sr-only">{el.title}</span>
+            ) : (
+              el.title
+            )}
           </Button>
         );
       })}

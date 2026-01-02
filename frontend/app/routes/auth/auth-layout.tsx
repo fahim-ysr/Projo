@@ -1,5 +1,6 @@
 // Layout for authentication pages (sign-in, sign-up, etc.)
 
+import { Loader } from "@/components/ui/loader";
 import { useAuth } from "@/provider/auth-context";
 import React from "react";
 import { Navigate, Outlet } from "react-router";

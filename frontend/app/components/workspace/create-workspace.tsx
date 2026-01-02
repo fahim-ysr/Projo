@@ -24,7 +24,6 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { cn } from "@/lib/utils";
 import { useCreateWorkspace } from "@/hooks/use-workspace";
-import { error } from "console";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 
@@ -48,45 +47,46 @@ export const colorOptions = [
 ];
 
 // Main create workspace component
-export const CreateWorkspace =
-  () =>
-  ({ isCreatingWorkspace, setIsCreatingWorkspace }: CreateWorkspaceProps) => {
-    const form = useForm<WorkspaceForm>({
-      resolver: zodResolver(workspaceSchema),
-      defaultValues: {
-        name: "",
-        color: colorOptions[0],
-        description: "",
+export const CreateWorkspace = ({
+  isCreatingWorkspace,
+  setIsCreatingWorkspace,
+}: CreateWorkspaceProps) => {
+  const form = useForm<WorkspaceForm>({
+    resolver: zodResolver(workspaceSchema),
+    defaultValues: {
+      name: "",
+      color: colorOptions[0],
+      description: "",
+    },
+  });
+
+  const navigate = useNavigate();
+  const { mutate, isPending } = useCreateWorkspace();
+
+  // Handles form submission for creating a workspace
+  const onSubmit = (data: WorkspaceForm) => {
+    console.log(data, {
+      onSuccess: (data: any) => {
+        form.reset();
+        setIsCreatingWorkspace(false);
+        toast.success("Workspace created successfully");
+        navigate(`/workspaces/${data._id}`);
+      },
+      onError: (error: any) => {
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+        console.log(error);
       },
     });
+  };
 
-    const { mutate, isPending } = useCreateWorkspace();
-    const navigate = useNavigate();
-
-    // Handles form submission for creating a workspace
-    const onSubmit = (data: WorkspaceForm) => {
-      console.log(data, {
-        onSuccess: (data: any) => {
-          form.reset();
-          setIsCreatingWorkspace(false);
-          toast.success("Workplace created successfully");
-          navigate(`/workspace/${data._id}`);
-        },
-        onError: (error: any) => {
-          const errorMessage = error.response.data.message;
-          toast.error(errorMessage);
-          error.console.log(error);
-        },
-      });
-    };
-
-    return (
-      <Dialog open={isCreatingWorkspace} onOpenChange={setIsCreatingWorkspace}>
-        <DialogContent className="max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Create Workspace</DialogTitle>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}></form>
+  return (
+    <Dialog open={isCreatingWorkspace} onOpenChange={setIsCreatingWorkspace}>
+      <DialogContent className="max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Create Workspace</DialogTitle>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="space-y-4 py-4">
                 {/* Workspace Name */}
                 <FormField
@@ -148,9 +148,10 @@ export const CreateWorkspace =
                   )}
                 />
               </div>
-            </Form>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    );
-  };
+            </form>
+          </Form>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};

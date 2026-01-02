@@ -9,7 +9,7 @@ import {
 
 // Auth related routes
 export default [
-  layout("routes/auth/auth_layout.tsx", [
+  layout("routes/auth/auth-layout.tsx", [
     index("routes/root/home.tsx"),
     route("sign-in", "routes/auth/sign-in.tsx"),
     route("sign-up", "routes/auth/sign-up.tsx"),
@@ -17,9 +17,8 @@ export default [
     route("reset-password", "routes/auth/reset-password.tsx"),
     route("verify-email", "routes/auth/verify-email.tsx"),
   ]),
-
-  // Dashboard routes
   layout("routes/dashboard/dashboard-layout.tsx", [
     route("dashboard", "routes/dashboard/index.tsx"),
+    route("workspaces", "routes/dashboard/workspaces/index.tsx"),
   ]),
 ] satisfies RouteConfig;

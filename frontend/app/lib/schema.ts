@@ -41,5 +41,5 @@ export const forgotPasswordSchema = z.object({
 export const workspaceSchema = z.object({
   name: z.string().min(3, "Must be at least 3 characters"),
   color: z.string().min(3, "Must be at least 3 characters"),
-  description: z.string().min(3, "Must be at least 3 characters"),
+  description: z.string().optional(),
 });

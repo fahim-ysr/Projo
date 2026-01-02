@@ -1,7 +1,6 @@
 // Sign-in Page
 
 import { signInSchema } from "@/lib/schema";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -51,7 +50,11 @@ const SignIn = () => {
         login(data);
         console.log(data);
         toast.success("Login successful");
-        navigate("/dashboard");
+        // Use setTimeout to ensure state updates before navigation (Remove)
+        setTimeout(() => {
+          navigate("/dashboard", { replace: true });
+        }, 0);
+        // navigate("/dashboard");
       },
       onError: (error: any) => {
         const errorMessage =
@@ -138,7 +141,7 @@ const SignIn = () => {
           <CardFooter className="flex items-center justify-center mt-6">
             <div className="flex items-center justify-center">
               <p className="text-sm text-muted-foreground">
-                Don&apos;t have an accout? <Link to="/sign-up">Sign up</Link>
+                Don&apos;t have an account? <Link to="/sign-up">Sign up</Link>
               </p>
             </div>
           </CardFooter>

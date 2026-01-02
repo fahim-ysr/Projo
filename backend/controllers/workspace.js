@@ -1,6 +1,6 @@
 // Controller functions for workspace creation and retrieval
 
-import Workspace from "../models/workspace";
+import Workspace from "../models/workspace.js";
 
 // Creates a new workspacee and adds the creator as owner
 const createWorkspace = async (req, res) => {

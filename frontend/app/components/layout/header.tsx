@@ -11,11 +11,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+  DropdownMenuGroup,
+} from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link, useLoaderData } from "react-router";
 import { WorkspaceAvatar } from "../workspace/workspace-avatar";
-import { DropdownMenuGroup } from "../ui/dropdown-menu";
 
 interface HeaderProps {
   onWorkspaceSelected: (workspace: Workspace) => void;
@@ -57,7 +57,7 @@ export const Header = ({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-          <DropdownMenu>Workspace</DropdownMenu>
+          <DropdownMenuLabel>Workspace</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {/* List of workspaces */}
           <DropdownMenuGroup>

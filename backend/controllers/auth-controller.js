@@ -361,4 +361,10 @@ const verifyResetPasswordTokenAndResetPassword = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, verifyEmail, resetPasswordRequest };
+export {
+  registerUser,
+  loginUser,
+  verifyEmail,
+  resetPasswordRequest,
+  verifyResetPasswordTokenAndResetPassword,
+};

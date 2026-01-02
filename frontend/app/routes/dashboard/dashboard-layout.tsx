@@ -18,22 +18,26 @@ export const clientLoader = async () => {
     return { workspaces };
   } catch (error) {
     console.log(error);
+    return { workspaces: [] };
   }
 };
 
 const DashboardLayout = () => {
+  console.log("Entered DashboardLayout rendering");
   const { isAuthenticated, isLoading } = useAuth();
   const [isCreatingWorkspace, setIsCreatingWorkspace] = useState(false);
   const [currentWorkspace, setCurrentWorkspace] = useState<Workspace | null>(
     null
   );
 
+  console.log("DashboardLayout rendered");
+
   if (isLoading) {
     return <Loader />;
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="sign-in" />;
+    return <Navigate to="/sign-in" replace />;
   }
 
   // Handles workspace selection from the header

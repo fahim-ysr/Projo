@@ -17,7 +17,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { ScrollArea } from "../ui/scroll-area";
 import { SidebarNav } from "./sidebar-nav";
 
 export const SidebarComponent = ({
@@ -65,7 +65,7 @@ export const SidebarComponent = ({
     <div
       className={cn(
         "flex flex-col border-r bg-sidebar transition-all duration-300",
-        isCollapsed ? "w-16 md:w[80px]" : "w-16 md:[240px]"
+        isCollapsed ? "w-16 md:w[80px]" : "w-16 md:w-[240px]"
       )}
     >
       {/* Logo and collapse button */}
@@ -95,24 +95,24 @@ export const SidebarComponent = ({
             <ChevronsLeft className="size-4" />
           )}
         </Button>
+      </div>
 
-        {/* Navigation links */}
-        <ScrollArea className="flex-1 px-3 py-2">
-          <SidebarNav
-            items={navItems}
-            isCollapsed={isCollapsed}
-            className={cn(isCollapsed && "items-center space-y-2")}
-            currentWorkspace={currentWorkspace}
-          />
-        </ScrollArea>
+      {/* Navigation links */}
+      <ScrollArea className="flex-1 px-3 py-2">
+        <SidebarNav
+          items={navItems}
+          isCollapsed={isCollapsed}
+          className={cn(isCollapsed && "items-center space-y-2")}
+          currentWorkspace={currentWorkspace}
+        />
+      </ScrollArea>
 
-        {/* Logout button */}
-        <div>
-          <Button variant={"ghost"} size="icon" onClick={logout}>
-            <LogOut className={cn("size-4", isCollapsed && "mr-2")} />
-            <span className="hidden md:block">Logout</span>
-          </Button>
-        </div>
+      {/* Logout button */}
+      <div>
+        <Button variant={"ghost"} size="icon" onClick={logout}>
+          <LogOut className={cn("size-4", isCollapsed && "mr-2")} />
+          <span className="hidden md:block">Logout</span>
+        </Button>
       </div>
     </div>
   );

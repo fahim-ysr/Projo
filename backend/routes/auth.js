@@ -15,6 +15,7 @@ import {
   loginUser,
   verifyEmail,
   resetPasswordRequest,
+  verifyResetPasswordTokenAndResetPassword,
 } from "../controllers/auth-controller.js";
 
 // Creates a new router instance for authentication endpoints

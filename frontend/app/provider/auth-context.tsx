@@ -22,7 +22,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
   const currentPath = useLocation().pathname;
@@ -31,7 +31,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Checks if user is already logged in when the app loads
   useEffect(() => {
     const checkAuth = async () => {
-      setIsLoading(true);
+      // Debuging (Remove)
+      if (typeof window === "undefined") {
+        setIsLoading(false);
+        return;
+      }
 
       const userInfo = localStorage.getItem("user");
 
