@@ -50,11 +50,7 @@ const SignIn = () => {
         login(data);
         console.log(data);
         toast.success("Login successful");
-        // Use setTimeout to ensure state updates before navigation (Remove)
-        setTimeout(() => {
-          navigate("/dashboard", { replace: true });
-        }, 0);
-        // navigate("/dashboard");
+        navigate("/dashboard");
       },
       onError: (error: any) => {
         const errorMessage =

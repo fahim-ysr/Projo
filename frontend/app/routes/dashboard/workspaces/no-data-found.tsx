@@ -1,3 +1,5 @@
+// Component to show when there is no data (e.g., no workspaces found)
+
 import { Button } from "@/components/ui/button";
 import { CirclePlus, LayoutGrid } from "lucide-react";
 
@@ -8,6 +10,7 @@ interface NoDataFoundProps {
   buttonAction: () => void;
 }
 
+// Displays a friendly message and action button when no data is available
 export const NoDataFound = ({
   title,
   description,
