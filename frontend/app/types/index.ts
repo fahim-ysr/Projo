@@ -1,7 +1,7 @@
 // Type definitions for User and Workspace objects
 
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   createdAt: Date;
@@ -90,4 +90,11 @@ export interface Project {
   createdAt: Date;
   updatedAt: Date;
   isArchived: boolean;
+}
+
+export interface MembersProp {
+  _id: string;
+  user: User;
+  role: "admin" | "member" | "owner" | "viewer";
+  joinedAt: Date;
 }

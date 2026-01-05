@@ -16,7 +16,7 @@ export const WorkspaceAvatar = ({
         backgroundColor: color,
       }}
     >
-      <span className="text-ts font-medium text-white">
+      <span className="text-xs font-medium text-white">
         {name.charAt(0).toUpperCase()}
       </span>
     </div>

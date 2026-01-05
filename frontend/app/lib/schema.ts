@@ -1,11 +1,16 @@
-import { z } from "zod";
+// Zod schemas for form validation (sign in, sign up, password reset, workspace, project, etc.)
 
+import { ProjectStatus } from "@/types";
+import { optional, z } from "zod";
+
+// Schema for sign-in form
 export const signInSchema = z.object({
   // Gets email and password
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password is required"),
 });
 
+// Schema for sign-up form with password confirmation
 export const signUpSchema = z
   .object({
     // Gets name, email, password and confirmPassword
@@ -22,6 +27,7 @@ export const signUpSchema = z
     message: "Passwords do not match",
   });
 
+// Schema for resetting password with confirmation
 export const resetPasswordSchema = z
   .object({
     // Gets newPassword and confirmPassword
@@ -34,12 +40,32 @@ export const resetPasswordSchema = z
     message: "Passwords do not match",
   });
 
+// Schema for forgot password form
 export const forgotPasswordSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
+// Schema for workspace creation form
 export const workspaceSchema = z.object({
   name: z.string().min(3, "Must be at least 3 characters"),
   color: z.string().min(3, "Must be at least 3 characters"),
   description: z.string().optional(),
+});
+
+// Schema for project creation form
+export const projectSchema = z.object({
+  title: z.string().min(3, "Must be at least 3 characters"),
+  description: z.string().optional(),
+  status: z.nativeEnum(ProjectStatus),
+  startDate: z.string().min(10, "Start date is required"),
+  dueDate: z.string().min(10, "Due date is required"),
+  members: z
+    .array(
+      z.object({
+        user: z.string(),
+        role: z.enum(["admin", "member", "owner", "viewer"]),
+      })
+    )
+    .optional(),
+  tags: z.string().optional(),
 });

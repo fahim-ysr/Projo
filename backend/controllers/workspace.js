@@ -38,6 +38,8 @@ const getWorkspaces = async (req, res) => {
     const workspaces = await Workspace.find({
       "members.user": req.user._id,
     }).sort({ createdAt: -1 });
+
+    res.status(200).json(workspaces);
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -94,7 +96,7 @@ const getWorkspaceProjects = async (req, res) => {
       .populate("tasks", "status")
       .sort({ createdAt: -1 });
 
-    res.status(200).json(projects, workspace);
+    res.status(200).json({ projects, workspace });
   } catch (error) {
     console.log(error);
     res.status(500).json({

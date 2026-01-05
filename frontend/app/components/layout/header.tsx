@@ -35,84 +35,84 @@ export const Header = ({
   return (
     <div className="bg-background sticky top-0 z-40 border-b">
       {/* Workspace selector */}
-      <div className="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8 py-4"></div>
-      <></>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant={"outline"}>
-            {selectedWorkspace ? (
-              <>
-                {selectedWorkspace.color && (
-                  <WorkspaceAvatar
-                    color={selectedWorkspace.color}
-                    name={selectedWorkspace.name}
-                  />
-                )}
-                <span className="font-medium">{selectedWorkspace?.name}</span>
-              </>
-            ) : (
-              <span className="font-medium">Select Workspace</span>
-            )}
-          </Button>
-        </DropdownMenuTrigger>
-
-        <DropdownMenuContent>
-          <DropdownMenuLabel>Workspace</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {/* List of workspaces */}
-          <DropdownMenuGroup>
-            {workspaces.map((ws) => (
-              <DropdownMenuItem
-                key={ws._id}
-                onClick={() => onWorkspaceSelected(ws)}
-              >
-                {ws.color && (
-                  <WorkspaceAvatar name={ws.name} color={ws.color} />
-                )}
-                <span className="ml-2">{ws.name}</span>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
-          {/* Create new workspace option */}
-          <DropdownMenuGroup>
-            <DropdownMenuItem onClick={onCreateWorkspace}>
-              <PlusCircle className="w-4 h-4 mr-2" />
-              Create Workspace
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      {/* User menu and notifications */}
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon">
-          <Bell />
-        </Button>
-
+      <div className="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="rounded-full border p-1 w-8 h-8">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src={user?.profilePicture} alt={user?.name} />
-                <AvatarFallback className="bg-black text-white">
-                  {user?.name?.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            </button>
+            <Button variant={"outline"}>
+              {selectedWorkspace ? (
+                <>
+                  {selectedWorkspace.color && (
+                    <WorkspaceAvatar
+                      color={selectedWorkspace.color}
+                      name={selectedWorkspace.name}
+                    />
+                  )}
+                  <span className="font-medium">{selectedWorkspace?.name}</span>
+                </>
+              ) : (
+                <span className="font-medium">Select Workspace</span>
+              )}
+            </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Workspace</DropdownMenuLabel>
             <DropdownMenuSeparator />
-
-            <DropdownMenuItem>
-              <Link to="/user/profile">Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem onClick={logout}>Log Out</DropdownMenuItem>
+            {/* List of workspaces */}
+            <DropdownMenuGroup>
+              {workspaces.map((ws) => (
+                <DropdownMenuItem
+                  key={ws._id}
+                  onClick={() => onWorkspaceSelected(ws)}
+                >
+                  {ws.color && (
+                    <WorkspaceAvatar name={ws.name} color={ws.color} />
+                  )}
+                  <span className="ml-2">{ws.name}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+            {/* Create new workspace option */}
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={onCreateWorkspace}>
+                <PlusCircle className="w-4 h-4 mr-2" />
+                Create Workspace
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* User menu and notifications */}
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon">
+            <Bell />
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="rounded-full border p-1 w-8 h-8">
+                <Avatar className="w-8 h-8">
+                  <AvatarImage src={user?.profilePicture} alt={user?.name} />
+                  <AvatarFallback className="bg-primary text-primary-foreground">
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem>
+                <Link to="/user/profile">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem onClick={logout}>Log Out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </div>
   );

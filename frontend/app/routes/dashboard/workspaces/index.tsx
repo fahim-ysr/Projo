@@ -71,7 +71,6 @@ const Workspaces = () => {
         isCreatingWorkspace={isCreatingWorkspace}
         setIsCreatingWorkspace={setIsCreatingWorkspace}
       />
-      ;
     </>
   );
 };
