@@ -36,6 +36,8 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
+import { UseCreateProject } from "@/hooks/use-project";
+import { toast } from "sonner";
 
 // Props for the CreateProjectDialog component
 interface CreateProjectDialogProps {
@@ -69,9 +71,30 @@ export const CreateProjectDialog = ({
     },
   });
 
+  const { mutate, isPending } = UseCreateProject();
+
   // Handles form submission
-  const onSubmit = (data: CreateProjectFormData) => {
-    console.log(data);
+  const onSubmit = (values: CreateProjectFormData) => {
+    if (!workspaceId) return;
+
+    mutate(
+      {
+        projectData: values,
+        workspaceId,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Project created successfully");
+          form.reset();
+          onOpenChange(false);
+        },
+        onError: (error: any) => {
+          const errorMessage = error.response.data.message;
+          toast.error(errorMessage);
+          console.log(error);
+        },
+      }
+    );
   };
 
   return (
@@ -284,7 +307,7 @@ export const CreateProjectDialog = ({
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent
-                          className="w-sm max-w-60 overflow-y-auto"
+                          className="w-full max-w-60 overflow-y-auto"
                           align="start"
                         >
                           <div className="flex flex-col gap-2">
@@ -376,7 +399,9 @@ export const CreateProjectDialog = ({
 
             {/* Submit Button */}
             <DialogFooter>
-              <Button type="submit">Create Project</Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? "Creating..." : "Create Project"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

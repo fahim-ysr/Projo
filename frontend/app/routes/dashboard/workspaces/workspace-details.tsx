@@ -42,6 +42,8 @@ const WorkspaceDetails = () => {
     );
   }
 
+  console.log(data);
+
   return (
     <div className="space-y-8">
       {/* Workspace header with actions */}
