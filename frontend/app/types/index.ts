@@ -1,4 +1,4 @@
-// Type definitions for User and Workspace objects
+// Type definitions for User, Workspace, Project, ProjectStatus, ProjectMemberRole, Task, TaskStatus, TaskPriority, Subtask, Attachment and MembersProp objects
 
 export interface User {
   _id: string;
@@ -97,4 +97,10 @@ export interface MembersProp {
   user: User;
   role: "admin" | "member" | "owner" | "viewer";
   joinedAt: Date;
+}
+
+export enum ProjectMemberRole {
+  MANAGER = "manager",
+  CONTRIBUTER = "contributor",
+  VIEWER = "viewer",
 }

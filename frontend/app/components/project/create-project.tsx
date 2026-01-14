@@ -351,17 +351,19 @@ export const CreateProjectDialog = ({
                                     <Select
                                       value={selectedMember.role}
                                       onValueChange={(role) => {
-                                        selectedMembers.map((m) =>
-                                          m.user === member.user._id
-                                            ? {
-                                                ...m,
-                                                role: role as
-                                                  | "contributor"
-                                                  | "admin"
-                                                  | "manager"
-                                                  | "viewer",
-                                              }
-                                            : m
+                                        field.onChange(
+                                          selectedMembers.map((m) =>
+                                            m.user === member.user._id
+                                              ? {
+                                                  ...m,
+                                                  role: role as
+                                                    | "contributor"
+                                                    | "admin"
+                                                    | "manager"
+                                                    | "viewer",
+                                                }
+                                              : m
+                                          )
                                         );
                                       }}
                                     >

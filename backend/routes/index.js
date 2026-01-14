@@ -13,5 +13,7 @@ router.use("/auth", authRoutes);
 router.use("/workspaces", workspaceRoutes);
 // Mount project routes
 router.use("/projects", projectRoutes);
+// Mount task routes
+router.use("/tasks", taskRoutes);
 
 export default router;
