@@ -1,6 +1,6 @@
 // This file contains the backend logic for creating a new project in a workspace
 
-import Workspace from "../model/workspace.js";
+import Workspace from "../models/workspace.js";
 import Project from "../models/project.js";
 
 const createProject = async (req, res) => {

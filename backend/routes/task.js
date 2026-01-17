@@ -3,9 +3,9 @@
 import express from "express";
 import { z } from "zod";
 import { validateRequest } from "zod-express-middleware";
-import authMiddleware from "../middleware/auth-middleware";
+import authMiddleware from "../middleware/auth-middleware.js";
 import { taskSchema } from "../libs/validate-schema.js";
-import { createTask } from "../controllers/tasks.js";
+import { createTasks } from "../controllers/tasks.js";
 
 // Creates new router for task related routes
 const router = express.Router();
@@ -23,7 +23,7 @@ router.post(
     body: taskSchema,
   }),
   //   Creates the task
-  createTask
+  createTasks
 );
 
 export default router;

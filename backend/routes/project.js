@@ -5,6 +5,7 @@ import authMiddleware from "../middleware/auth-middleware.js";
 import { validateRequest } from "zod-express-middleware";
 import { projectSchema } from "../libs/validate-schema.js";
 import { createProject } from "../controllers/project.js";
+import { z } from "zod";
 
 // Create a new router for project-related routes
 const router = express.Router();

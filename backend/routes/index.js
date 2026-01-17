@@ -4,6 +4,7 @@ import express, { Router } from "express";
 import authRoutes from "./auth.js";
 import workspaceRoutes from "./workspace.js";
 import projectRoutes from "./project.js";
+import taskRoutes from "./task.js";
 
 const router = express.Router();
 
